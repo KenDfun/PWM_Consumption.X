@@ -6,9 +6,9 @@
             <name>PWM_Consumption</name>
             <creation-uuid>ab56a4a3-6e2f-4f73-994d-69ef0854da09</creation-uuid>
             <make-project-type>0</make-project-type>
-            <c-extensions/>
+            <c-extensions>c</c-extensions>
             <cpp-extensions/>
-            <header-extensions/>
+            <header-extensions>h</header-extensions>
             <asminc-extensions/>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
