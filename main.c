@@ -49,8 +49,11 @@
 /*
                          Main application
  */
+
+
 void main(void)
 {
+
     // initialize the device
     SYSTEM_Initialize();
 
@@ -61,25 +64,65 @@ void main(void)
     //INTERRUPT_GlobalInterruptEnable();
 
     // Enable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
 
     // Disable the Global Interrupts
     //INTERRUPT_GlobalInterruptDisable();
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
+
+    
+    LATC=0;
     
     /* PWM1 EN */
     PWM1_Start();
-    SLEEP();
-    NOP();
-    LED2_LAT=1;
-
+  
+    
     while (1)
     {
-        // Add your application code
+        // Add your application code      
+//#define MEASURE_ON
+//#define AD_DISP
+
+#ifdef AD_DISP
+        unsigned char adres;
+#endif
+    
+        // Clear the TMR1 interrupt flag
+        PIR1bits.TMR1IF = 0;
+        // Timer1 Start;
+
+#ifdef MEASURE_ON
+        LED4_LAT=1;  // measure for AD conversion time.
+#endif
+        TMR1_Reload();
+        TMR1_StartTimer();
+
+        // ADC
+        ADC1_StartConversion(channel_AN3);
+        while(ADCON0bits.GO_nDONE==1){}
+
+#ifdef AD_DISP
+        adres=ADRESH;
+        LED1_LAT=(adres>>7) & 0x1;
+        LED2_LAT=(adres>>6) & 0x1;
+        LED3_LAT=(adres>>5) & 0x1;
+//        LED4_LAT= adres & 0x1;
+#endif
+        ADCON0bits.ADON = 0;
+        
+#ifdef MEASURE_ON
+        LED4_LAT=0;  // measure for AD conversion time
+#endif
+        
+        // Go sleep!
+        SLEEP();
+        NOP();
+                
     }
 }
+
 /**
  End of File
 */

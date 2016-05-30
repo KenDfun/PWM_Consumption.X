@@ -84,7 +84,7 @@ typedef uint16_t adc_result_t;
 
 typedef enum
 {
-    Potentiometer =  0x3,
+    channel_AN3 =  0x3,
     channel_Temp =  0x1D,
     channel_DAC =  0x1E,
     channel_FVR =  0x1F
